@@ -7,34 +7,7 @@ class StudentSchedule {
         this.selectedCells = new Set();
         this.scheduleData = this.loadScheduleData();
         this.academicYear = this.getAcademicYear();
-        this.setupCrossTabSync();
         this.init();
-    }
-
-    setupCrossTabSync() {
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'studentSchedule' && e.newValue) {
-                this.scheduleData = JSON.parse(e.newValue);
-                this.generateSchedule();
-                this.showNotification('Данные обновлены из другой вкладки');
-            }
-        });
-    }
-
-    debouncedSave = this.debounce(() => {
-        this.saveScheduleData();
-    }, 1000);
-
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
     }
 
     init() {
@@ -216,7 +189,6 @@ class StudentSchedule {
         this.saveCurrentWeek();
         this.generateSchedule();
         this.closeModal();
-        this.debouncedSave();
     }
 
     deleteLesson() {
@@ -229,7 +201,6 @@ class StudentSchedule {
             this.saveCurrentWeek();
             this.generateSchedule();
             this.closeModal();
-            this.debouncedSave();
         }
     }
 
